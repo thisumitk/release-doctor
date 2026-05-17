@@ -1,0 +1,49 @@
+{
+  "name": "release-doctor",
+  "version": "0.1.0",
+  "description": "A lightweight CLI that detects npm package release blockers before publish.",
+  "type": "module",
+  "bin": {
+    "release-doctor": "bin/release-doctor.js"
+  },
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "doctor": "node ./bin/release-doctor.js .",
+    "lint": "node --check ./bin/release-doctor.js && node --check ./src/cli.js && node --check ./src/fs.js && node --check ./src/index.js && node --check ./src/report.js && node --check ./test/release-doctor.test.js",
+    "test": "node --test",
+    "check": "npm run lint && npm test && node ./bin/release-doctor.js --strict ."
+  },
+  "keywords": [
+    "npm",
+    "release",
+    "publish",
+    "package",
+    "ci",
+    "cli",
+    "doctor"
+  ],
+  "author": "Release Doctor contributors",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "npm@11.4.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thisumitk/release-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thisumitk/release-doctor/issues"
+  },
+  "homepage": "https://github.com/thisumitk/release-doctor#readme"
+}
