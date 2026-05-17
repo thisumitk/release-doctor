@@ -15,6 +15,8 @@ This project supports two release paths:
 
 If both are available, the workflow uses `NPM_TOKEN`. If `NPM_TOKEN` is not configured, it publishes through trusted publishing using the job's OIDC identity.
 
+Trusted publishing requires npm CLI 11.5.1 or newer. The release workflow installs the npm version pinned in `package.json` before publishing.
+
 ## Version Checklist
 
 Before publishing:
