@@ -13,15 +13,21 @@
   "files": [
     "bin",
     "src",
+    "docs",
     "README.md",
     "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
     "LICENSE"
   ],
   "scripts": {
     "doctor": "node ./bin/release-doctor.js .",
     "lint": "node --check ./bin/release-doctor.js && node --check ./src/cli.js && node --check ./src/fs.js && node --check ./src/index.js && node --check ./src/report.js && node --check ./test/release-doctor.test.js",
     "test": "node --test",
-    "check": "npm run lint && npm test && node ./bin/release-doctor.js --strict ."
+    "check": "npm run lint && npm test && node ./bin/release-doctor.js --strict .",
+    "release:dry-run": "npm publish --dry-run --json",
+    "prepublishOnly": "npm run check"
   },
   "keywords": [
     "npm",

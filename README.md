@@ -18,6 +18,16 @@ Run it from any package directory:
 npx release-doctor .
 ```
 
+Or add a project script:
+
+```json
+{
+  "scripts": {
+    "release:doctor": "release-doctor --strict ."
+  }
+}
+```
+
 For CI, use strict mode so warnings fail the job:
 
 ```sh
@@ -28,6 +38,29 @@ You can also run without installing:
 
 ```sh
 npm exec release-doctor -- .
+```
+
+## GitHub Actions
+
+```yaml
+name: Release checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  release-doctor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx release-doctor --strict .
 ```
 
 ## What It Checks
@@ -81,9 +114,14 @@ npx release-doctor --json .
 
 The JSON output includes package summaries, issue counts, severity, category, stable issue codes, recommendations, and evidence when available.
 
+## Usage Guide
+
+See [docs/USAGE.md](docs/USAGE.md) for local development workflows, CI examples, JSON consumption, and troubleshooting.
+
 ## Development
 
 ```sh
+npm ci
 npm test
 npm run check
 ```
@@ -94,11 +132,13 @@ The package intentionally has no runtime dependencies.
 
 Maintainers can publish from a GitHub release. The release workflow runs `npm ci`, `npm run check`, and `npm publish --provenance`.
 
-Before the first npm release, confirm that the package is connected to npm trusted publishing or publish manually with an npm account that owns the package name.
+Manual releases are guarded by `prepublishOnly`, which runs the full check suite before `npm publish`.
+
+See [docs/RELEASE.md](docs/RELEASE.md) for the release checklist, changelog format, and npm publishing options.
 
 ## Contributing
 
-Issues and pull requests are welcome. Please keep new checks deterministic and avoid executing target package scripts unless the user explicitly opts in.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Please keep new checks deterministic and avoid executing target package scripts unless the user explicitly opts in.
 
 ## Security
 

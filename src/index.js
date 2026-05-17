@@ -835,7 +835,7 @@ function checkCi(rootContext, issues) {
     }));
   }
 
-  if (!/npm\s+(run\s+)?test|pnpm\s+(run\s+)?test|yarn\s+test|bun\s+test/i.test(combined)) {
+  if (!/npm\s+(run\s+)?(test|check)|pnpm\s+(run\s+)?(test|check)|yarn\s+(test|check)|bun\s+(test|run\s+check)/i.test(combined)) {
     issues.push(contextIssue(rootContext, {
       severity: "warning",
       code: "CI_TEST_STEP_MISSING",

@@ -1,0 +1,32 @@
+name: Bug report
+description: Report an incorrect or missing Release Doctor diagnostic.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Minimal package fixture
+      description: Share the smallest package.json or file layout that reproduces the issue.
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Release Doctor version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true

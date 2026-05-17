@@ -1,0 +1,23 @@
+name: Feature request
+description: Suggest a new release diagnostic, CLI option, or workflow improvement.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Release problem
+      description: What npm release issue should Release Doctor detect or improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: What should the tool report or do?
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Real-world examples
+      description: Link npm, CI, or package manager behavior that motivates this.

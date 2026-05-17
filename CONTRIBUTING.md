@@ -28,3 +28,13 @@ npm run check
 ```
 
 Use concise commits and describe the release issue your change detects or fixes.
+
+## Documentation
+
+- User-facing usage belongs in `README.md`.
+- Release process details belong in `docs/RELEASE.md`.
+- Every new issue code should have a clear title, message, recommendation, and test coverage.
+
+## Compatibility
+
+Release Doctor supports Node.js 20 and newer. CI runs the test suite across supported Node versions.
