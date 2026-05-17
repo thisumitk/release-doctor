@@ -11,6 +11,8 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      HAS_NPM_TOKEN: ${{ secrets.NPM_TOKEN != '' }}
     permissions:
       contents: read
       id-token: write
@@ -34,11 +36,14 @@ jobs:
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Publish to npm
-        if: steps.published.outputs.exists == 'false'
+      - name: Publish to npm with token
+        if: steps.published.outputs.exists == 'false' && env.HAS_NPM_TOKEN == 'true'
         run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm with trusted publishing
+        if: steps.published.outputs.exists == 'false' && env.HAS_NPM_TOKEN != 'true'
+        run: npm publish --provenance
       - name: Skip existing npm version
         if: steps.published.outputs.exists == 'true'
         run: echo "Skipping npm publish because this version already exists."
