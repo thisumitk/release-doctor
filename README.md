@@ -118,6 +118,8 @@ The JSON output includes package summaries, issue counts, severity, category, st
 
 See [docs/USAGE.md](docs/USAGE.md) for local development workflows, CI examples, JSON consumption, and troubleshooting.
 
+See [docs/ISSUE_CODES.md](docs/ISSUE_CODES.md) for the stable diagnostic codes emitted in human-readable and JSON reports.
+
 ## Development
 
 ```sh
@@ -139,6 +141,10 @@ See [docs/RELEASE.md](docs/RELEASE.md) for the release checklist, changelog form
 ## Contributing
 
 Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Please keep new checks deterministic and avoid executing target package scripts unless the user explicitly opts in.
+
+## Support
+
+See [SUPPORT.md](SUPPORT.md) for where to ask usage questions and how to report bugs.
 
 ## Security
 

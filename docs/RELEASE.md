@@ -10,8 +10,12 @@ This project supports two release paths:
 - GitHub write access to `thisumitk/release-doctor`.
 - npm publish access to the `release-doctor` package.
 - For the GitHub release workflow, configure one of:
-  - npm trusted publishing for this repository and workflow.
+  - npm trusted publishing for `thisumitk/release-doctor`, workflow `Release`, and package `release-doctor`.
   - An `NPM_TOKEN` repository secret with publish access.
+
+If both are available, the workflow uses `NPM_TOKEN`. If `NPM_TOKEN` is not configured, it publishes through trusted publishing using the job's OIDC identity.
+
+Trusted publishing requires npm CLI 11.5.1 or newer. The release workflow installs the npm version pinned in `package.json` before publishing.
 
 ## Version Checklist
 
@@ -53,7 +57,7 @@ Use semantic versioning:
 ## GitHub Release
 
 1. Push the release commit and tag.
-2. Create a GitHub release from the tag.
+2. Create or publish a GitHub release from the tag.
 3. Include release notes copied from `CHANGELOG.md`.
 4. Confirm the `Release` workflow succeeds.
 5. Confirm npm shows the new version:
