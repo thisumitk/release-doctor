@@ -24,11 +24,12 @@
   ],
   "scripts": {
     "doctor": "node ./bin/release-doctor.js .",
-    "lint": "node --check ./bin/release-doctor.js && node --check ./src/cli.js && node --check ./src/fs.js && node --check ./src/index.js && node --check ./src/report.js && node --check ./test/release-doctor.test.js",
+    "lint": "node --check ./bin/release-doctor.js && node --check ./src/cli.js && node --check ./src/fs.js && node --check ./src/index.js && node --check ./src/report.js && node --check ./test/release-doctor.test.js && node --check ./test/cli.test.js && node --check ./test/robustness.test.js && node --check ./test/packaging.test.js && node --check ./test-support/fixtures.js",
     "test": "node --test",
     "check": "npm run lint && npm test && node ./bin/release-doctor.js --strict .",
     "release:dry-run": "npm publish --dry-run --json",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check",
+    "test:coverage": "node --test --experimental-test-coverage"
   },
   "keywords": [
     "npm",

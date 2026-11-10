@@ -10,7 +10,7 @@ This project supports two release paths:
 - GitHub write access to `thisumitk/release-doctor`.
 - npm publish access to the `release-doctor` package.
 - For the GitHub release workflow, configure one of:
-  - npm trusted publishing for `thisumitk/release-doctor`, workflow `Release`, and package `release-doctor`.
+  - npm trusted publishing for `thisumitk/release-doctor`, workflow filename `release.yml`, and package `release-doctor`.
   - An `NPM_TOKEN` repository secret with publish access.
 
 If both are available, the workflow uses `NPM_TOKEN`. If `NPM_TOKEN` is not configured, it publishes through trusted publishing using the job's OIDC identity.
@@ -33,6 +33,8 @@ Then update:
 - `package.json` version.
 - `package-lock.json` version metadata.
 - `CHANGELOG.md` with the release date, highlights, fixes, and breaking changes.
+
+After updating the version and changelog, repeat `npm run check` and `npm run release:dry-run` against the final release commit. Verify all three CI runtime assertions and packed-artifact tests for that commit before tagging.
 
 Use semantic versioning:
 

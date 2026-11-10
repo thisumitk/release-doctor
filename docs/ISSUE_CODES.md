@@ -7,7 +7,7 @@ Release Doctor reports stable issue codes for CI systems, dashboards, and releas
 | Code | Meaning |
 | --- | --- |
 | `PKG_JSON_MISSING` | No `package.json` was found. |
-| `PKG_JSON_INVALID` | `package.json` could not be parsed as JSON. |
+| `PKG_JSON_INVALID` | `package.json` is invalid JSON or is not a JSON object. |
 | `PKG_PRIVATE` | `private: true` prevents npm publication. |
 | `PKG_NAME_MISSING` | The package has no `name`. |
 | `PKG_NAME_INVALID` | The package name does not follow npm naming rules. |
@@ -41,6 +41,7 @@ Release Doctor reports stable issue codes for CI systems, dashboards, and releas
 | `FILES_ENTRY_INVALID` | A `files` entry is invalid. |
 | `FILES_ENTRY_MISSING` | A `files` entry does not exist on disk. |
 | `PACKAGE_CONTENTS_UNBOUNDED` | The package has neither `files` nor `.npmignore`. |
+| `BIN_NOT_FILE` | A CLI bin target exists but is not a regular file. |
 | `BIN_SHEBANG_MISSING` | A CLI bin file is missing a shebang. |
 | `BIN_NOT_EXECUTABLE` | A CLI bin file is not executable on POSIX systems. |
 
@@ -77,7 +78,7 @@ Release Doctor reports stable issue codes for CI systems, dashboards, and releas
 | `LOCKFILE_MISSING` | No package-manager lockfile was found. |
 | `LOCKFILE_MULTIPLE_MANAGERS` | Multiple package-manager lockfiles were found. |
 | `LOCKFILE_MANAGER_MISMATCH` | The lockfile does not match `packageManager`. |
-| `LOCKFILE_INVALID_JSON` | An npm lockfile is invalid JSON. |
+| `LOCKFILE_INVALID_JSON` | An npm lockfile is invalid JSON or is not a JSON object. |
 | `LOCKFILE_NAME_STALE` | The npm lockfile root package name is stale. |
 | `LOCKFILE_VERSION_STALE` | The npm lockfile root package version is stale. |
 | `LOCKFILE_DEPENDENCIES_STALE` | Lockfile dependency metadata differs from `package.json`. |

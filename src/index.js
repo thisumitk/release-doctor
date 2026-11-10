@@ -6,6 +6,7 @@ import {
   findNearestPackageRoot,
   hasAnyFile,
   isDirectory,
+  isFile,
   patternToRegex,
   pathExists,
   readDirFiles,
@@ -93,6 +94,20 @@ function loadPackage(packageRoot, repoRoot, issues) {
       title: "package.json is invalid JSON",
       message: parsed.error.message,
       recommendation: "Fix the JSON syntax so npm can read the manifest.",
+      packagePath: relativePackagePath(repoRoot, packageRoot),
+      file: "package.json"
+    }));
+    return null;
+  }
+
+  if (!isPlainObject(parsed.value)) {
+    issues.push(issue({
+      severity: "error",
+      code: "PKG_JSON_INVALID",
+      category: "manifest",
+      title: "package.json must contain an object",
+      message: "The manifest must be a JSON object, not null, an array, or a primitive value.",
+      recommendation: "Replace the manifest with a JSON object containing package metadata.",
       packagePath: relativePackagePath(repoRoot, packageRoot),
       file: "package.json"
     }));
@@ -497,6 +512,19 @@ function checkEntrypoints(context, issues) {
       continue;
     }
 
+    if (target.kind === "bin" && !isFile(resolved)) {
+      issues.push(contextIssue(context, {
+        severity: "error",
+        code: "BIN_NOT_FILE",
+        category: "publishing",
+        title: "CLI bin target is not a file",
+        message: `${target.field} points to ${target.value}, which is not a regular file.`,
+        recommendation: "Point bin to an executable file inside the package.",
+        file: "package.json"
+      }));
+      continue;
+    }
+
     if (target.kind === "bin") {
       checkBinTarget(context, target, resolved, issues);
     }
@@ -702,6 +730,19 @@ function checkRootLockfiles(rootContext, issues) {
       category: "reproducibility",
       title: `${npmLock[0]} is invalid JSON`,
       message: parsed.error.message,
+      recommendation: "Regenerate the lockfile with npm install --package-lock-only.",
+      file: npmLock[0]
+    }));
+    return;
+  }
+
+  if (!isPlainObject(parsed.value)) {
+    issues.push(contextIssue(rootContext, {
+      severity: "error",
+      code: "LOCKFILE_INVALID_JSON",
+      category: "reproducibility",
+      title: `${npmLock[0]} must contain an object`,
+      message: "An npm lockfile must be a JSON object, not null, an array, or a primitive value.",
       recommendation: "Regenerate the lockfile with npm install --package-lock-only.",
       file: npmLock[0]
     }));
@@ -1075,6 +1116,7 @@ function isIncludedByFiles(relativePath, files) {
   if (alwaysIncluded.test(normalized)) return true;
 
   return files.some((entry) => {
+    if (!isNonEmptyString(entry)) return false;
     const clean = entry.replace(/^\.\//, "").replace(/\/+$/, "");
     if (clean.includes("*")) {
       return patternToRegex(clean).test(normalized);
