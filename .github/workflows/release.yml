@@ -17,12 +17,14 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/setup-node@v6
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
           registry-url: https://registry.npmjs.org
+      - name: Verify selected Node.js runtime
+        run: node -e 'require("node:assert/strict").equal(process.versions.node.split(".")[0], "24"); console.log(process.version)'
       - run: npm install -g npm@11.14.1
       - run: npm ci
       - run: npm run check

@@ -9,8 +9,8 @@ import { runDoctor } from "../src/index.js";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-test("reports a clean package with no release blockers", async () => {
-  const root = await fixture("clean-package");
+test("reports a clean package with no release blockers", async (t) => {
+  const root = await fixture(t, "clean-package");
   await writePackage(root, {
     name: "clean-package",
     version: "1.0.0",
@@ -66,8 +66,8 @@ test("reports a clean package with no release blockers", async () => {
   assert.equal(report.counts.warning, 0);
 });
 
-test("detects common npm release blockers", async () => {
-  const root = await fixture("broken-package");
+test("detects common npm release blockers", async (t) => {
+  const root = await fixture(t, "broken-package");
   await writePackage(root, {
     name: "Broken Package",
     version: "1",
@@ -102,8 +102,8 @@ test("detects common npm release blockers", async () => {
   assert(codes.has("SCRIPT_TEST_PLACEHOLDER"));
 });
 
-test("discovers workspaces and reports dependency drift", async () => {
-  const root = await fixture("workspace-package");
+test("discovers workspaces and reports dependency drift", async (t) => {
+  const root = await fixture(t, "workspace-package");
   await writePackage(root, {
     name: "workspace-root",
     version: "1.0.0",
@@ -143,8 +143,8 @@ test("discovers workspaces and reports dependency drift", async () => {
   assert(codes.has("WORKSPACE_DEPENDENCY_DRIFT"));
 });
 
-test("CLI emits JSON and exits non-zero for release blockers", async () => {
-  const root = await fixture("cli-broken");
+test("CLI emits JSON and exits non-zero for release blockers", async (t) => {
+  const root = await fixture(t, "cli-broken");
   await writePackage(root, {
     name: "cli-broken",
     version: "0.0.0",
@@ -161,8 +161,10 @@ test("CLI emits JSON and exits non-zero for release blockers", async () => {
   assert(report.issues.some((item) => item.code === "PKG_PRIVATE"));
 });
 
-async function fixture(name) {
-  return fs.mkdtemp(path.join(os.tmpdir(), `release-doctor-${name}-`));
+async function fixture(t, name) {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), `release-doctor-${name}-`));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  return root;
 }
 
 async function writePackage(root, contents) {

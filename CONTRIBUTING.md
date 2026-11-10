@@ -7,9 +7,12 @@ Thanks for helping improve Release Doctor.
 ```sh
 npm ci
 npm run check
+npm run test:coverage
 ```
 
 The project intentionally avoids runtime dependencies. Prefer Node.js standard library APIs unless a dependency clearly improves correctness or maintainability.
+
+See [docs/TESTING.md](docs/TESTING.md) for each suite's scope and isolated artifact checks, and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design and known limits.
 
 ## Adding Checks
 
@@ -17,7 +20,9 @@ The project intentionally avoids runtime dependencies. Prefer Node.js standard l
 - Do not execute target package lifecycle scripts from the diagnostic engine.
 - Return stable issue codes so CI consumers can suppress or track findings.
 - Include a clear recommendation for every issue.
-- Add focused tests for clean and failing fixtures.
+- Add focused tests for clean and failing fixtures, including malformed input.
+- Register temporary-file cleanup with `t.after`, even for tests expected to fail.
+- Preserve CLI exit codes and JSON-only stdout. Do not echo authentication values into diagnostics.
 
 ## Pull Requests
 
@@ -37,4 +42,4 @@ Use concise commits and describe the release issue your change detects or fixes.
 
 ## Compatibility
 
-Release Doctor supports Node.js 20 and newer. CI runs the test suite across supported Node versions.
+Release Doctor supports Node.js 20 and newer. CI explicitly selects and asserts Node.js 20, 22, and 24 before running the full check suite. The publish workflow uses Node.js 24 and the pinned npm version.

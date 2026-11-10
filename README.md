@@ -128,7 +128,11 @@ npm test
 npm run check
 ```
 
-The package intentionally has no runtime dependencies.
+The package intentionally has no runtime dependencies. The test suite includes a real packed-artifact installation, installed CLI/API smoke checks, CLI exit-code contracts, malformed-input regressions, and lifecycle-script non-execution checks.
+
+See [docs/TESTING.md](docs/TESTING.md) for reproducible verification and runtime-matrix evidence, and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the execution path, tradeoffs, and known limits.
+
+CI workflow detection and publish-file matching are static heuristics, not complete GitHub Actions or npm validation. Always review the actual CI runs and packed artifact before publishing.
 
 ## Releasing
 
