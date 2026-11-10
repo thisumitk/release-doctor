@@ -19,7 +19,7 @@ npm run test:coverage
 - `test/robustness.test.js`: malformed and non-object JSON, invalid file-list entries, directory-valued bins, shebang/mode checks, path traversal, conditional exports, stale lockfiles, token redaction, non-execution of lifecycle scripts, and workspace discovery.
 - `test/packaging.test.js`: creates a real npm tarball, checks its contents, installs it into an isolated consumer offline, and runs the installed CLI and public API. On POSIX it also invokes npm's installed command link.
 
-Every filesystem fixture registers cleanup, including when an assertion fails. The packaging test uses a temporary npm cache and disables lifecycle scripts, audit, funding requests, and network installation. It never runs `npm publish` and does not need an npm token. Its subprocess timeout is 30 seconds per command.
+Every filesystem fixture registers cleanup, including when an assertion fails. The packaging test uses a temporary npm cache and disables lifecycle scripts, audit, funding requests, and network installation. It never runs `npm publish` and does not need an npm token. The isolated pack/install subprocesses explicitly disable inherited npm dry-run mode so the publication dry run can still exercise real temporary artifacts; this does not change the parent publication mode. Both inherited modes are tested. Its subprocess timeout is 30 seconds per command.
 
 To focus on a suite:
 
@@ -43,6 +43,6 @@ npm run check
 npm run release:dry-run
 ```
 
-The dry run exercises the publication lifecycle but does not upload a package. Review the file list and version, and verify the actual CI results for the commit being released. See [RELEASE.md](RELEASE.md).
+The dry run exercises the publication lifecycle but does not upload a package. npm may still query the registry and reject an already-published version; a version-conflict error after passing lifecycle checks is not a test failure. Run it again with the intended, reviewed release version before publishing. Review the file list and version, and verify the actual CI results for the commit being released. See [RELEASE.md](RELEASE.md).
 
 A passing suite is bounded evidence, not proof of all npm semantics. See [ARCHITECTURE.md](ARCHITECTURE.md) for what the diagnostic engine does not validate.
